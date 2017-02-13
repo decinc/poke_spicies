@@ -42,8 +42,18 @@ Copyright (C) 2016 Bernardo Giordano
 #define GAME_B2 13
 #define GAME_W2 14
 
+
+#define         MASKBITS                0x3F
+#define         MASKBYTE                0x80
+#define         MASK2BYTES              0xC0
+#define         MASK3BYTES              0xE0
+#define         MASK4BYTES              0xF0
+#define         MASK5BYTES              0xF8
+#define         MASK6BYTES              0xFC
+
+
 void checkMaxValue(u8* pkmn, int byteEntry, int value, int max);
-void loadLines(u8 *src, u8 *dst, u8 strlen,  u32 size);
+void loadLines(u8 *src, wchar_t *dst, u8 strlen,  u32 size);
 bool checkFile(char* path);
 void loadPersonal();
 void loadFile(u8* buf, char* path);

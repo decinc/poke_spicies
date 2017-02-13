@@ -15,16 +15,16 @@ NAME := PKSM
 
 BUILD_DIR := build
 OUTPUT_DIR := output
-INCLUDE_DIRS := 
+INCLUDE_DIRS := /Users/decinc/devkitPro/devkitARM/include
 SOURCE_DIRS := source/memecrypto/source source
 
 EXTRA_OUTPUT_FILES :=
 
 PORTLIBS_PATH := $(DEVKITPRO)/portlibs
-PORTLIBS := $(PORTLIBS_PATH)/armv6k $(PORTLIBS_PATH)/3ds
+PORTLIBS := $(PORTLIBS_PATH)/armv6k $(PORTLIBS_PATH)/3ds 
 CTRULIB ?= $(DEVKITPRO)/libctru
 
-LIBRARY_DIRS := $(PORTLIBS) $(CTRULIB)
+LIBRARY_DIRS := $(PORTLIBS) $(CTRULIB) /Users/decinc/devkitPro/portlibs/3ds/lib /usr/local/lib
 LIBRARIES := sfil sftd freetype png z sf2d citro3d ctru m
 
 BUILD_FLAGS := -march=armv6k -mtune=mpcore -mfloat-abi=hard

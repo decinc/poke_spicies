@@ -35,19 +35,59 @@ void checkMaxValue(u8* pkmn, int byteEntry, int value, int max) {
 		pkmn[byteEntry] = temp;
 }
 
-void loadLines(u8 *src, u8 *dst, u8 strlen,  u32 size) {
+wchar_t* UTF8Decode2BytesUnicode(char* input)
+{
+  int size = strlen(input);
+  wchar_t* result = (wchar_t*) malloc(size*sizeof(wchar_t));
+  int rindex = 0,
+      windex = 0;
+  while (rindex < size)
+  {
+      wchar_t ch;
+
+      // 1110xxxx 10xxxxxx 10xxxxxx
+      if((input[rindex] & MASK3BYTES) == MASK3BYTES)
+      {
+         ch = ((input[rindex] & 0x0F) << 12) | (
+               (input[rindex+1] & MASKBITS) << 6)
+              | (input[rindex+2] & MASKBITS);
+         rindex += 3;
+      }
+      // 110xxxxx 10xxxxxx
+      else if((input[rindex] & MASK2BYTES) == MASK2BYTES)
+      {
+         ch = ((input[rindex] & 0x1F) << 6) | (input[rindex+1] & MASKBITS);
+         rindex += 2;
+      }
+      // 0xxxxxxx
+      else if(input[rindex] < MASKBYTE)
+      {
+         ch = input[rindex];
+         rindex += 1;
+      }
+
+      result[windex] = ch;
+   }
+}
+
+void loadLines(u8 *src, wchar_t *dst, u8 strlen,  u32 size) {
 	u16 readnum = 3;
 	u16 line = 0, chr; 
-
+	int index = 0;
 	while (readnum < size) {
 		chr = 0;
+		char buf[255] = {0,};
 		while (readnum < size && src[readnum] != '\n') {
-		  dst[line * strlen + chr] = src[readnum];
+		  ((char*)dst)[chr] = src[readnum];
+
 		  readnum++;
 		  chr++;
 		}
-		dst[line * strlen + chr] = 0;
+		//wchar_t* tmp = UTF8Decode2BytesUnicode(buf);
+		//memcpy(dst[index], tmp, 12 * sizeof(wchar_t));
+		//free(tmp);
 		readnum++;
+		index++;
 		line++;
 	}
 }
@@ -78,6 +118,7 @@ void loadPersonal() {
 	}
 	rewind(fptr);
 	fread(buf, size, 1, fptr);
+
 	fclose(fptr);
 	memcpy(personal.pkmData, buf, size);
 	free(buf);

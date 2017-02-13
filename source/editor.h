@@ -61,7 +61,7 @@ Copyright (C) 2016 Bernardo Giordano
 #define ED_HEX 8
 
 struct {
-	u8 species[803][12];
+	wchar_t species[803][12];
 	u8 pkmData[961][15];
 } personal;
 
